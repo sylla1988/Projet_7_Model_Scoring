@@ -318,9 +318,122 @@ html.Div([
                                                                       # "height": '50px',
                                                                        'border': '5px dotted red',
                                                                        'padding':'50px 3px 50px 50px'}), 
-
+#------------------------------------------------------------------------------   
                         
-                    ])
+                         html.Div([
+                                        dcc.Markdown(children=markdown_text)
+                                    ],style ={'background': '',
+                                                "color": "black", 'textAlign':'center',
+                                                 'border': '10px solid #ccc', 
+                                                  'padding':'10px 0px 10px 0px'} ),
+                  #****************************************************************************************       
+                html.Div([html.H3("Eléments justifiant la décision de prêt ou non ")], style ={'background': 'blue',
+                                                                                             "color": "white", 'textAlign':'center',
+                                                                                    'padding':'10px 0px 10px 0px'}),
+
+                      html.Div([
+                    dcc.Graph(id = 'proba_value'),
+                            
+                   html.P("Position of hline"),
+                dcc.Slider(
+                id='slider-position', 
+                        min=0, max=1, value=0.54123, step=0.54123,
+                    marks={0: '0',0.54123:'0.54123', 1: '1'}
+                                        ),
+                     ], style = {'border': '1px solid #ccc', 
+                                #'box-shadow': '0 2px 2px #ccc',
+                                 'display': 'inline-block',
+                                 'verticalAlign': 'top',
+                                 'width': '45%',
+                                 'padding': '0px 0px 0px 0px'
+                                }),
+                    #____________________________________________________________
+                        html.Div([
+                    dcc.Graph(id = 'graph_lime')
+                     ], style = {#'border': '1px solid #ccc', 
+                                #'box-shadow': '0 2px 0px #ccc',
+                                 'display': 'inline-block',
+                                 'verticalAlign': 'top',
+                                 'width': '45%',
+                                'padding': '50px 0px 0px 30px'
+                                }), 
+                             #________________________client similaires__________________________
+                      
+             html.Div([html.H3("Tableau des données du client choisi et de ses quatre plus proches voisins ?")], 
+                      style ={'background': 'blue',
+                               "color": "white", 'textAlign':'center',
+                           'padding':'10px 0px 10px 0px'}),
+        html.Div([            
+                    dash_table.DataTable(
+                                            id='client_similaire',
+                                            columns=[  {"name": i, "id": i} for i in app_test.reset_index().columns],
+                                            
+                                           filter_action='custom',
+                                            filter_query='',
+                                            fixed_rows={'headers': True, 'data': 0 },
+                                           style_cell={'width': '200px'},
+                                            style_table={'minWidth': '90%'},
+                                            style_data_conditional=[
+                                                                    {'if': {'row_index': 'odd'},
+                                                                    'backgroundColor': 'rgb(248, 248, 248)' 
+                                                                    }],
+                                            style_header={
+                                                            'backgroundColor': 'rgb(230, 230, 230)',
+                                                            'fontWeight': 'bold'
+                                                        }, 
+                                            virtualization=True,
+                                         )
+
+
+                                  ],style ={'width': '90%', "border": '1px solid #eee',
+                            'box-shadow': '0 2px 2px #ccc',
+                             'display': 'inline_block',
+                            'verticalAlign': 'top',
+                            'padding':'60px 30px 60px 30px'
+                                           } ),
+
+                         #--------------------liste deroulante de choix de variable pour afficher une pie plot----------------------
+
+                     html.Div([  
+            
+            html.H4("Choisissez une variable:"),
+            ## deuxieme composante un dcc
+            dcc.Dropdown(
+                ##donner un id
+                id = 'variable',
+                #on choisit l'option qu'est je vais mettre à l'interieur du dropdown (ici les variables)
+                options = variables,
+                #on  peut même donner une valeur par defaut le client à l'index 0
+                value = variables[0])
+
+                     ], style = {'width': "25%", # 25 % de la page
+                                            "border": '1px solid #eee',
+                                            'padding': '30px 30px 30px 120px',
+                                            'box-shadow': '2px 2px 0px #ccc',
+                                             'display': 'inline_block',
+                                            'verticalAlign': 'top'}),
+              #-------------------------------------- Titre -------------------------------------------
+                        
+                  html.Div([  
+            
+                               html.Div([html.H3("Comparaison du client choisi par rapport à ses plus proches voisins")],
+                                              style ={'background': 'blue',
+                                                        "color": "white", 'textAlign':'center',
+                                                        'padding':'10px 0px 10px 0px'}),
+
+                                ]),
+
+                      #------------------------------------------------------- Grphe 1---------------------------------------------
+                        html.Div([
+            dcc.Graph(id = 'graph_comp_1')
+                    ], style = {'border': '1px solid #ccc', 
+                                'box-shadow': '0 2px 2px #ccc',
+                                 'display': 'inline-block',
+                                 'verticalAlign': 'top',
+                                 'width': '90%',
+                                 'padding': '50px 0px 0px 50px'} ),                                                                                                                                            
+                        
+                    ]) # fin deuxieme onglet
 
 
                 ])
