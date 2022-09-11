@@ -307,8 +307,17 @@ html.Div([
     ################################################################################################
                     # 2 ieme onglet: Score de probabilté de faillite
                     dcc.Tab(label = 'Situation du client', children =[
-
-
+   #****************************************************************************************      
+           
+                 html.Div([html.H3("Acceptabilité de la demande de prêt du client ")], style ={'background': 'blue',
+                                                                                             "color": "white", 'textAlign':'center',
+                                                                                           'padding':'10px 0px 10px 0px'}), 
+   # prediction 
+   html.Div(id='result', children=["Resultat"], style={'background': '',
+                                                                       "color": "black",
+                                                                      # "height": '50px',
+                                                                       'border': '5px dotted red',
+                                                                       'padding':'50px 3px 50px 50px'}), 
 
                         
                     ])
