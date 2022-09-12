@@ -433,10 +433,81 @@ html.Div([
                                  'width': '90%',
                                  'padding': '50px 0px 0px 50px'} ),                                                                                                                                            
                         
-                    ]) # fin deuxieme onglet
+                    ]),
+                    # fin deuxieme onglet
+   #*****************************************************************************************         
+                            # 3ieme onglet: Grahique des coef importances local
+
+                         dcc.Tab(label="Performance du model", children=[
+ #------------------------------- Matrice de confusion ------------------------
+                                  html.Div([
+                                      html.H3("Matrice de confusion et coefficients importances"),
+                                            
+                                           ], style ={'background': 'blue',
+                                                    "color": "white", 'textAlign':'center',
+                                                    'padding':'10px 0px 10px 0px'},
+                                           ),
+                     html.Div([
+                            # Affiche la matrice de confusion obtenue apres optimisation fonction cout
+                                            
+                                            html.Div([
+                                                html.H3("Matrice de confusion"), 
+                                                dcc.Graph(id='matrice_conf',
+                                                          figure= plot_mat_conf(conf_mx),
+                                                         ),
+                                                     ], style = {'border': '1px solid #ccc', 
+                                                                'box-shadow': '0 2px 2px #ccc',
+                                                                 'display': 'inline-block',
+                                                                 'verticalAlign': 'top',
+                                                                 'width': '45%',
+                                                                 'padding': '50px 0px 0px 50px'
+                                                                }),
+                                 #------------------------------- coeficicient importances globales------------------------
+                        
+                                            html.Div([
+                                                html.H3("Coeficient importances"), 
+                                                dcc.Graph(id='coef_importance',
+                                                          figure= coef_importances(pipe_model),
+                                                         ),
+                                                     ],    style = {'border': '1px solid #ccc', 
+                                                                    'box-shadow': '0 2px 2px #ccc',
+                                                                     'display': 'inline-block',
+                                                                     'verticalAlign': 'top',
+                                                                     'width': '45%',
+                                                                     'padding': '50px 0px 0px 50px'
+                                                                    }),
 
 
-                ])
-])
+                             ]),                                                 
 
-])
+
+
+                    ]) ,# fin troisieme onglet
+                 # 4 ième onglet: Tableau fonction cout
+                    dcc.Tab(label = 'Fonction coût', children = [
+                                  
+        #-------------------------------------------------------petit titre de l'onglet-----------------------
+                    html.Div([html.H3('Graphique de la fonction de coût optimisée'),
+                             ],
+                              style = {'background': 'blue',
+                                         "color": "white", 'textAlign':'center',
+                                          'padding':'10px 0px 10px 0px'}),       
+                           
+                        html.Div([
+                            dcc.Graph(id = 'cout', 
+                                 figure = fonction_cout(),
+                                     
+                                 ),
+                        ], style = {'border': '1px solid #ccc', 
+                                      'box-shadow': '2px 2px 2px #ccc',
+                                        'display': 'inline-block',
+                                        'verticalAlign': 'top',
+                                        'width': '80%',
+                                            'padding': '50px 0px 0px 100px'})   
+                                ],
+                           ),  #fin 4 ieme fin             
+
+                ]) #fin des onglet 
+        ]) #fin div global
+
+]) #fin div Layout de app dash
