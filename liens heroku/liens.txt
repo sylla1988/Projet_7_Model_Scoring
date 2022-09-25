@@ -1,0 +1,6 @@
+liens gihub : https://github.com/sylla1988/Projet_7_Model_Scoring
+
+liens heroku dashboard : https://dashboard-projet-7.herokuapp.com/
+
+
+liens heroku API flask: https://app-flask-projet-7.herokuapp.com/predict?id_client=100005
