@@ -9,7 +9,9 @@ import pickle
 from operator import itemgetter
 from sklearn.neighbors import NearestNeighbors
 import plotly.graph_objs as go
-import base64
+import requests
+
+URL_API = "https://app-flask-projet-7.herokuapp.com/"
 
 # Import de base de données  
 x_test_transformed = pd.read_csv("x_test_transformed.csv")
@@ -35,9 +37,8 @@ explainer = lime_tabular.LimeTabularExplainer(x_test_transformed,
 
 #------------------------------------------------------------------------------------------------------
 
-path = r'C:\Users\sylla\Desktop\Data Sciences\Projet7_ impémenter un model scoring\archive/'
 
-app_test = pd.read_csv(path + "application_test.csv")
+app_test = pd.read_csv("application_test.csv")
 app_test = app_test.set_index("SK_ID_CURR")
 #----------------------------------------------------------------------------------------------------
 df_cout = pd.read_csv("df_cout.csv")
@@ -167,7 +168,7 @@ markdown_text = '''
 ### Seuil de probabilté
 
 Le seuil de probalilité obtenu après optimisation de la
-fonction coût est de: **0.54123**.
+fonction coût est de: **0.538258**.
 
 En sous de cette  valeur, **demande acceptée**;
 
@@ -337,8 +338,8 @@ html.Div([
                    html.P("Position of hline"),
                 dcc.Slider(
                 id='slider-position', 
-                        min=0, max=1, value=0.54123, step=0.54123,
-                    marks={0: '0',0.54123:'0.54123', 1: '1'}
+                        min=0, max=1, value=0.538258, step=0.538258,
+                    marks={0: '0',0.538258:'0.538258', 1: '1'}
                                         ),
                      ], style = {'border': '1px solid #ccc', 
                                 #'box-shadow': '0 2px 2px #ccc',
@@ -603,7 +604,7 @@ def graph_bar_infos_client(id_client):
 def update_result(id_client):
     proba = pipe_model[3].predict_proba(np.array(x_test_transformed.loc[id_client]).reshape(1, -1)).flatten()
     proba = proba[1]
-    if (proba < 0.541237): 
+    if (proba < 0.538258): 
         return "Demande de prêt accéptée !"
     else:
         return "Demande de prêt refusée !"
@@ -614,12 +615,16 @@ def update_result(id_client):
 @app.callback(Output('proba_value', 'figure'),
              [Input('id_client', 'value')])
 def update_proba_bar(id_client):    
-    proba = pipe_model[3].predict_proba(np.array(x_test_transformed.loc[id_client]).reshape(1, -1)).flatten()
-    prod = np.array([proba[1]])
+    #proba = pipe_model[3].predict_proba(np.array(x_test_transformed.loc[id_client]).reshape(1, -1)).flatten()
+    #prod = np.array([proba[1]])
+    responses = requests.get(URL_API + "predict", params={"id_client":id_client})
+    proba = responses.json()
+    prod = np.array([proba])
     df = ["Classe"]
     fig =px.bar(x = df, y= prod,
                 labels=dict(x = '...= Seuil', y='Score proba'),
                title='Le score de probabilité  pour prise de décision ', text_auto=True)
+    fig.update_layout(xaxis_visible=False, xaxis_showticklabels=False)
     fig.add_hline(y=0.8, line_color="black", line_dash="dot", line_width = 0.001)
     fig.add_hline(y=0.54123, line_color="red", line_dash="dot", line_width = 2)
     return fig
