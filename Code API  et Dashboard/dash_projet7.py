@@ -602,8 +602,10 @@ def graph_bar_infos_client(id_client):
     [Input('id_client', 'value')])
 
 def update_result(id_client):
-    proba = pipe_model[3].predict_proba(np.array(x_test_transformed.loc[id_client]).reshape(1, -1)).flatten()
-    proba = proba[1]
+    #proba = pipe_model[3].predict_proba(np.array(x_test_transformed.loc[id_client]).reshape(1, -1)).flatten()
+    #proba = proba[1]
+    responses = requests.get(URL_API + "predict", params={"id_client":id_client})
+    proba = responses.json()
     if (proba < 0.538258): 
         return "Demande de prêt accéptée !"
     else:
